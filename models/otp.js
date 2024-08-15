@@ -7,10 +7,11 @@ const OTP = sequelize.define('OTP', {
     primaryKey: true,
     autoIncrement: true,
   },
-  user_id: {
+  userId: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
-      model: 'User',
+      model: 'Users',
       key: 'id',
     },
   },
@@ -25,7 +26,7 @@ const OTP = sequelize.define('OTP', {
 });
 
 OTP.associate = (models) => {
-  OTP.belongsTo(models.User, { foreignKey: 'user_id' });
+  OTP.belongsTo(models.User, { foreignKey: 'userId' });
 };
 
 module.exports = OTP;

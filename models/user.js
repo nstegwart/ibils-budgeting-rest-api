@@ -55,11 +55,15 @@ const User = sequelize.define('User', {
   },
 });
 
+// User.associate = (models) => {
+//   User.hasMany(models.Wallet, { foreignKey: 'user_id' });
+//   User.hasMany(models.PremiumStatus, { foreignKey: 'user_id' });
+//   User.hasMany(models.OTP, { foreignKey: 'user_id' });
+//   User.hasMany(models.Category, { foreignKey: 'user_id' });
+// };
+
 User.associate = (models) => {
-  User.hasMany(models.Wallet, { foreignKey: 'user_id' });
-  User.hasMany(models.PremiumStatus, { foreignKey: 'user_id' });
-  User.hasMany(models.OTP, { foreignKey: 'user_id' });
-  User.hasMany(models.Category, { foreignKey: 'user_id' });
+  User.hasMany(models.OTP, { foreignKey: 'userId' });
 };
 
 module.exports = User;
