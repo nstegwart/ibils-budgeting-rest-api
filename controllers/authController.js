@@ -223,7 +223,13 @@ exports.getProfile = async (req, res) => {
       include: [
         {
           model: PremiumStatus,
-          attributes: ['premium_status', 'expiration_date'],
+          attributes: [
+            'premium_status',
+            'packageId',
+            'expiration_date',
+            'createdAt',
+            'updatedAt',
+          ],
         },
       ],
     });
@@ -233,12 +239,8 @@ exports.getProfile = async (req, res) => {
     }
 
     const userProfile = user.toJSON();
-    userProfile.premium_status = user.PremiumStatus
-      ? user.PremiumStatus.premium_status
-      : false;
-    userProfile.premium_expiration = user.PremiumStatus
-      ? user.PremiumStatus.expiration_date
-      : null;
+    userProfile.premium_status = userProfile.PremiumStatus || null;
+    delete userProfile.PremiumStatus;
 
     res.status(200).json({ user: userProfile });
   } catch (error) {

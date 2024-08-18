@@ -6,13 +6,16 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 
 const sequelize = require('./utils/database');
-const { fileFilter, fileStorage } = require('./utils/file-handler');
 
-const authRoutes = require('./routes/authRoutes');
 const PremiumStatus = require('./models/premium-status');
 const User = require('./models/user');
 const Package = require('./models/package');
 const OTP = require('./models/otp');
+const seedPackages = require('./utils/dummy');
+
+const { fileFilter, fileStorage } = require('./utils/file-handler');
+
+const authRoutes = require('./routes');
 
 User.hasOne(PremiumStatus, { foreignKey: 'userId' });
 PremiumStatus.belongsTo(User, { foreignKey: 'userId' });
@@ -61,11 +64,13 @@ app.use('/api/v1', authRoutes);
 
 // Start server
 sequelize
-  .sync({ force: true, alter: true })
-  .then(() => {
+  // .sync({ force: true, alter: true })
+  .sync()
+  .then(async () => {
     // User.drop();
     // OTP.drop();
     console.log('Database & tables created!');
+    await seedPackages();
     app.listen(process.env.PORT, () => {
       console.log(`Server running on port ${port}`);
     });
