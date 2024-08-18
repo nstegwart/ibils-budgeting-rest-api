@@ -1,44 +1,44 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/database');
+const User = require('./user'); // Adjust the path as needed
+const Package = require('./package'); // Adjust the path as needed
 
-const PremiumStatus = sequelize.define('PremiumStatus', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  user_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'User',
-      key: 'id',
+const PremiumStatus = sequelize.define(
+  'PremiumStatus',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
+        key: 'id',
+      },
+    },
+    premium_status: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    packageId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Package,
+        key: 'id',
+      },
+      allowNull: true,
+    },
+    expiration_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
   },
-  premium_status: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-  id_package: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'Package',
-      key: 'id',
-    },
-    allowNull: true, // Allow null if no package is associated (e.g., free trial)
-  },
-  expiration_date: {
-    type: DataTypes.DATE,
-    allowNull: true, // Allow null if there's no specific expiration (e.g., indefinite premium)
-  },
-});
-
-PremiumStatus.associate = (models) => {
-  PremiumStatus.belongsTo(models.User, { foreignKey: 'id_user' });
-  PremiumStatus.belongsTo(models.Package, { foreignKey: 'id_package' }); // New association
-};
+  {
+    timestamps: true, // adds createdAt and updatedAt
+  }
+);
 
 module.exports = PremiumStatus;

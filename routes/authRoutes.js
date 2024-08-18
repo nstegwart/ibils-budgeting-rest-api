@@ -33,4 +33,6 @@ router.post(
 
 router.post('/resend-otp', tokenMiddleware, authController.resendOTP);
 
+router.get('/profile', tokenMiddleware, authController.getProfile);
+
 module.exports = router;

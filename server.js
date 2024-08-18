@@ -9,6 +9,17 @@ const sequelize = require('./utils/database');
 const { fileFilter, fileStorage } = require('./utils/file-handler');
 
 const authRoutes = require('./routes/authRoutes');
+const PremiumStatus = require('./models/premium-status');
+const User = require('./models/user');
+const Package = require('./models/package');
+const OTP = require('./models/otp');
+
+User.hasOne(PremiumStatus, { foreignKey: 'userId' });
+PremiumStatus.belongsTo(User, { foreignKey: 'userId' });
+
+Package.hasMany(PremiumStatus, { foreignKey: 'packageId' });
+PremiumStatus.belongsTo(Package, { foreignKey: 'packageId' });
+OTP.belongsTo(User, { foreignKey: 'userId' });
 
 const port = process.env.PORT;
 const app = express();
@@ -50,8 +61,10 @@ app.use('/api/v1', authRoutes);
 
 // Start server
 sequelize
-  .sync({ alter: true })
+  .sync({ force: true, alter: true })
   .then(() => {
+    // User.drop();
+    // OTP.drop();
     console.log('Database & tables created!');
     app.listen(process.env.PORT, () => {
       console.log(`Server running on port ${port}`);
