@@ -39,9 +39,6 @@ const User = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    avatar_url: {
-      type: DataTypes.STRING,
-    },
     user_language: {
       type: DataTypes.STRING,
     },

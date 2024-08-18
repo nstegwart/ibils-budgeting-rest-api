@@ -1,9 +1,7 @@
 require('dotenv').config();
 
-const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
-const multer = require('multer');
 
 const sequelize = require('./utils/database');
 
@@ -12,8 +10,6 @@ const User = require('./models/user');
 const Package = require('./models/package');
 const OTP = require('./models/otp');
 const seedPackages = require('./utils/dummy');
-
-const { fileFilter, fileStorage } = require('./utils/file-handler');
 
 const authRoutes = require('./routes');
 
@@ -30,11 +26,6 @@ const app = express();
 // for parsing application/json & application/xwww-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(
-  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image_url')
-);
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');

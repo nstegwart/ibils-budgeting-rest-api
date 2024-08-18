@@ -171,7 +171,7 @@ exports.verifyOTP = async (req, res) => {
 
 exports.resendOTP = async (req, res) => {
   try {
-    const userId = req.userData.userId; // Extract userId from token
+    const userId = req.userData.userId;
 
     const user = await User.findByPk(userId);
 
@@ -179,12 +179,15 @@ exports.resendOTP = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    // Delete existing OTP for this user
+    await OTP.destroy({ where: { userId: userId } });
+
     // Generate new OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
 
-    // Update or create new OTP record
-    await OTP.upsert({
+    // Create new OTP record
+    await OTP.create({
       userId: userId,
       otp,
       expires_at: expiresAt,

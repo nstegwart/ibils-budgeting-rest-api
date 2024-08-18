@@ -77,7 +77,7 @@ exports.getUserPremiumStatus = async (req, res, next) => {
 
     res.status(200).json({
       message: 'User premium status fetched successfully',
-      premiumStatus: {
+      data: {
         status: premiumStatus.premium_status,
         expirationDate: premiumStatus.expiration_date,
         package: premiumStatus.Package,
