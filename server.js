@@ -6,7 +6,11 @@ const bodyParser = require('body-parser');
 const sequelize = require('./utils/database');
 
 const authRoutes = require('./routes');
-const seedPackages = require('./utils/dummy');
+const {
+  seedPackages,
+  seedCategories,
+  seedCategoryIcons,
+} = require('./utils/dummy');
 
 const PremiumStatus = require('./models/premium-status');
 const User = require('./models/user');
@@ -88,6 +92,8 @@ sequelize
   .then(async () => {
     console.log('Database & tables created!');
     await seedPackages();
+    await seedCategoryIcons();
+    await seedCategories();
     app.listen(process.env.PORT, () => {
       console.log(`Server running on port ${port}`);
     });
