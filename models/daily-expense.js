@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/database');
+const Category = require('./category');
+const Wallet = require('./wallet');
 
 const DailyExpense = sequelize.define('DailyExpense', {
   id: {
@@ -21,17 +23,22 @@ const DailyExpense = sequelize.define('DailyExpense', {
   photo_transaction: {
     type: DataTypes.STRING,
   },
-  type_category: {
+  walletId: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
-      model: 'Category',
+      model: Wallet,
+      key: 'id',
+    },
+  },
+  categoryId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Category,
       key: 'id',
     },
   },
 });
-
-DailyExpense.associate = (models) => {
-  DailyExpense.belongsTo(models.Category, { foreignKey: 'type_category' });
-};
 
 module.exports = DailyExpense;

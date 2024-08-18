@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/database');
+const User = require('./user');
 
 const OTP = sequelize.define('OTP', {
   id: {
@@ -11,7 +12,7 @@ const OTP = sequelize.define('OTP', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Users',
+      model: User,
       key: 'id',
     },
   },

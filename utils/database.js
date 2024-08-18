@@ -9,6 +9,9 @@ const sequelize = new Sequelize(
     host: process.env.POSTGREHOST,
     port: process.env.POSTGRESPORT,
     dialect: 'postgres',
+    define: {
+      freezeTableName: true,
+    },
   }
 );
 

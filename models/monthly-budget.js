@@ -1,26 +1,31 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/database');
+const Category = require('./category');
+const Wallet = require('./wallet');
 
-const MonthlyBudget = sequelize.define('MonthlyBudget', {
+const MonthlyBudgeting = sequelize.define('MonthlyBudgeting', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  wallet_id: {
+  walletId: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
-      model: 'Wallet',
+      model: Wallet,
       key: 'id',
     },
   },
-  category_id: {
+  categoryId: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
-      model: 'Category',
+      model: Category,
       key: 'id',
     },
   },
+
   date: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -35,12 +40,4 @@ const MonthlyBudget = sequelize.define('MonthlyBudget', {
   },
 });
 
-MonthlyBudget.associate = (models) => {
-  MonthlyBudget.belongsTo(models.Wallet, { foreignKey: 'wallet_id' });
-  MonthlyBudget.hasMany(models.Budgeting, {
-    foreignKey: 'monthly_budgeting_id',
-  });
-  MonthlyBudget.belongsTo(models.Category, { foreignKey: 'category_id' });
-};
-
-module.exports = MonthlyBudget;
+module.exports = MonthlyBudgeting;
