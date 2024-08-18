@@ -83,7 +83,8 @@ app.use('/api/v1', authRoutes);
 
 // Start server
 sequelize
-  .sync({ force: true, alter: true })
+  // .sync({ force: true, alter: true })
+  .sync()
   .then(async () => {
     console.log('Database & tables created!');
     await seedPackages();

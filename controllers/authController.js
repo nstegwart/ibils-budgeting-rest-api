@@ -6,6 +6,7 @@ const User = require('../models/user');
 const OTP = require('../models/otp');
 
 const nodemailer = require('nodemailer');
+const Wallet = require('../models/wallet');
 
 const sendEmail = async (to, subject, text) => {
   const transporter = nodemailer.createTransport({
@@ -60,6 +61,11 @@ exports.register = async (req, res) => {
       phone_number,
       password: hashedPassword,
       register_via: 'internal',
+    });
+    await Wallet.create({
+      wallet_name: 'Personal Wallet',
+      userId: user.id,
+      wallet_icon: 'default_icon', // You can set a default icon or leave it null
     });
 
     const token = jwt.sign(
