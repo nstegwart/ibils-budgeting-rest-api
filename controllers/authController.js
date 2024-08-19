@@ -71,7 +71,7 @@ exports.register = async (req, res) => {
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '90d' }
     );
 
     // Generate and send OTP
@@ -132,7 +132,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '90d' }
     );
 
     res.status(200).json({ token, userId: user.id });
