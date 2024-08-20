@@ -11,9 +11,28 @@ exports.createMonthlyBudget = async (req, res) => {
       amount,
       budget_name,
     });
+
+    const budgetWithCategory = await MonthlyBudgeting.findByPk(newBudget.id, {
+      include: [
+        {
+          model: Category,
+          attributes: ['id', 'category_name', 'category_type'],
+        },
+      ],
+    });
+
+    const formatData = {
+      id: budgetWithCategory.id,
+      walletId: budgetWithCategory.walletId,
+      date: budgetWithCategory.date,
+      amount: budgetWithCategory.amount,
+      budget_name: budgetWithCategory.budget_name,
+      category_budget: budgetWithCategory.Category,
+    };
+
     res.status(201).json({
       message: 'Monthly budget created successfully',
-      data: newBudget,
+      data: formatData,
     });
   } catch (error) {
     res
@@ -31,9 +50,29 @@ exports.editMonthlyBudget = async (req, res) => {
       return res.status(404).json({ message: 'Monthly budget not found' });
     }
     await budget.update({ walletId, categoryId, date, amount, budget_name });
-    res
-      .status(200)
-      .json({ message: 'Monthly budget updated successfully', data: budget });
+
+    const updatedBudget = await MonthlyBudgeting.findByPk(id, {
+      include: [
+        {
+          model: Category,
+          attributes: ['id', 'category_name', 'category_type'],
+        },
+      ],
+    });
+
+    const formatData = {
+      id: updatedBudget.id,
+      walletId: updatedBudget.walletId,
+      date: updatedBudget.date,
+      amount: updatedBudget.amount,
+      budget_name: updatedBudget.budget_name,
+      category_budget: updatedBudget.Category,
+    };
+
+    res.status(200).json({
+      message: 'Monthly budget updated successfully',
+      data: formatData,
+    });
   } catch (error) {
     res
       .status(500)
@@ -47,10 +86,22 @@ exports.getMonthlyBudgets = async (req, res) => {
     const budgets = await MonthlyBudgeting.findAll({
       where: { walletId: walletId },
       include: [
-        { model: Category, attributes: ['category_name', 'category_type'] },
+        {
+          model: Category,
+          attributes: ['id', 'category_name', 'category_type'],
+        },
       ],
     });
-    res.status(200).json({ data: budgets });
+    const formattedBudget = budgets.map((budget) => ({
+      id: budget.id,
+      walletId: budget.walletId,
+      date: budget.date,
+      amount: budget.amount,
+      budget_name: budget.budget_name,
+      category_budget: budget.Category,
+    }));
+
+    res.status(200).json({ data: formattedBudget });
   } catch (error) {
     res.status(500).json({
       message: 'Error fetching monthly budgets',
@@ -62,11 +113,26 @@ exports.getMonthlyBudgets = async (req, res) => {
 exports.getMonthlyBudgetDetail = async (req, res) => {
   try {
     const { id } = req.params;
-    const budget = await MonthlyBudgeting.findByPk(id);
+    const budget = await MonthlyBudgeting.findByPk(id, {
+      include: [
+        {
+          model: Category,
+          attributes: ['id', 'category_name', 'category_type'],
+        },
+      ],
+    });
     if (!budget) {
       return res.status(404).json({ message: 'Monthly budget not found' });
     }
-    res.status(200).json({ budget });
+    const formatData = {
+      id: budget.id,
+      walletId: budget.walletId,
+      date: budget.date,
+      amount: budget.amount,
+      budget_name: budget.budget_name,
+      category_budget: budget.Category,
+    };
+    res.status(200).json({ data: formatData });
   } catch (error) {
     res.status(500).json({
       message: 'Error fetching monthly budget detail',

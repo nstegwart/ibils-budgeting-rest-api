@@ -33,6 +33,10 @@ const Category = sequelize.define('Category', {
       key: 'id',
     },
   },
+  associate_to: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
 module.exports = Category;
