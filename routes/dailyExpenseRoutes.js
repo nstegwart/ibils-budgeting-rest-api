@@ -22,7 +22,7 @@ router.delete(
 router.get(
   '/list/:walletId',
   tokenMiddleware,
-  dailyExpenseController.getDailyExpenses
+  dailyExpenseController.getDailyExpensesList
 );
 
 router.get(

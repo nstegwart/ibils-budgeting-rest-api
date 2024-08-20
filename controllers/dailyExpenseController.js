@@ -14,9 +14,38 @@ exports.createDailyExpense = async (req, res) => {
       note,
       photo_transaction,
     });
+    const createdExpense = await DailyExpense.findByPk(newExpense.id, {
+      include: [
+        {
+          model: Category,
+          include: [{ model: CategoryIcon, as: 'icon' }],
+        },
+      ],
+    });
+
+    const formattedExpense = {
+      id: createdExpense.id,
+      amount: createdExpense.amount,
+      date: createdExpense.date,
+      note: createdExpense.note,
+      photo_transaction: createdExpense.photo_transaction,
+      walletId: createdExpense.walletId,
+      category: {
+        id: createdExpense.Category.id,
+        category_name: createdExpense.Category.category_name,
+        category_type: createdExpense.Category.category_type,
+        category_icon: createdExpense.Category.icon
+          ? {
+              name_icon: createdExpense.Category.icon.name_icon,
+              icon_url: createdExpense.Category.icon.icon_url,
+            }
+          : null,
+      },
+    };
+
     res.status(201).json({
       message: 'Daily expense created successfully',
-      data: newExpense,
+      data: formattedExpense,
     });
   } catch (error) {
     res
@@ -34,9 +63,39 @@ exports.editDailyExpense = async (req, res) => {
       return res.status(404).json({ message: 'Daily expense not found' });
     }
     await expense.update({ categoryId, amount, date, note, photo_transaction });
-    res
-      .status(200)
-      .json({ message: 'Daily expense updated successfully', data: expense });
+    const updatedExpense = await DailyExpense.findByPk(id, {
+      include: [
+        {
+          model: Category,
+          include: [{ model: CategoryIcon, as: 'icon' }],
+        },
+      ],
+    });
+
+    const formattedExpense = {
+      id: updatedExpense.id,
+      amount: updatedExpense.amount,
+      date: updatedExpense.date,
+      note: updatedExpense.note,
+      photo_transaction: updatedExpense.photo_transaction,
+      walletId: updatedExpense.walletId,
+      category: {
+        id: updatedExpense.Category.id,
+        category_name: updatedExpense.Category.category_name,
+        category_type: updatedExpense.Category.category_type,
+        category_icon: updatedExpense.Category.icon
+          ? {
+              name_icon: updatedExpense.Category.icon.name_icon,
+              icon_url: updatedExpense.Category.icon.icon_url,
+            }
+          : null,
+      },
+    };
+
+    res.status(200).json({
+      message: 'Daily expense updated successfully',
+      data: formattedExpense,
+    });
   } catch (error) {
     res
       .status(500)
@@ -60,7 +119,7 @@ exports.deleteDailyExpense = async (req, res) => {
   }
 };
 
-exports.getDailyExpenses = async (req, res) => {
+exports.getDailyExpensesList = async (req, res) => {
   try {
     const { walletId } = req.params;
     const expenses = await DailyExpense.findAll({
@@ -68,11 +127,7 @@ exports.getDailyExpenses = async (req, res) => {
       include: [
         {
           model: Category,
-          attributes: [
-            'category_name',
-            'category_type',
-            'default_category_icon',
-          ],
+          attributes: ['category_name', 'category_type'],
           include: [
             {
               model: CategoryIcon,
@@ -91,13 +146,10 @@ exports.getDailyExpenses = async (req, res) => {
       note: expense.note,
       photo_transaction: expense.photo_transaction,
       walletId: expense.walletId,
-      categoryId: expense.categoryId,
-      createdAt: expense.createdAt,
-      updatedAt: expense.updatedAt,
       category: {
+        id: expense.Category.id,
         category_name: expense.Category.category_name,
         category_type: expense.Category.category_type,
-        default_category_icon: expense.Category.default_category_icon,
         category_icon: expense.Category.icon
           ? {
               name_icon: expense.Category.icon.name_icon,
@@ -122,11 +174,7 @@ exports.getDailyExpenseDetail = async (req, res) => {
       include: [
         {
           model: Category,
-          attributes: [
-            'category_name',
-            'category_type',
-            'default_category_icon',
-          ],
+          attributes: ['category_name', 'category_type'],
           include: [
             {
               model: CategoryIcon,
@@ -147,13 +195,10 @@ exports.getDailyExpenseDetail = async (req, res) => {
       note: expense.note,
       photo_transaction: expense.photo_transaction,
       walletId: expense.walletId,
-      categoryId: expense.categoryId,
-      createdAt: expense.createdAt,
-      updatedAt: expense.updatedAt,
       category: {
+        id: expense.Category.id,
         category_name: expense.Category.category_name,
         category_type: expense.Category.category_type,
-        default_category_icon: expense.Category.default_category_icon,
         category_icon: expense.Category.icon
           ? {
               name_icon: expense.Category.icon.name_icon,
