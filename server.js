@@ -37,6 +37,8 @@ User.hasMany(Wallet, { foreignKey: 'userId' });
 Wallet.belongsTo(User, { foreignKey: 'userId' });
 Wallet.hasMany(MonthlyBudgeting, { foreignKey: 'walletId' });
 MonthlyBudgeting.belongsTo(Wallet, { foreignKey: 'walletId' });
+Wallet.belongsTo(CategoryIcon, { foreignKey: 'wallet_icon', as: 'icon' });
+CategoryIcon.hasMany(Wallet, { foreignKey: 'wallet_icon' });
 
 Category.hasMany(MonthlyBudgeting, { foreignKey: 'categoryId' });
 MonthlyBudgeting.belongsTo(Category, { foreignKey: 'categoryId' });

@@ -13,9 +13,6 @@ const Category = sequelize.define('Category', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  default_category_icon: {
-    type: DataTypes.STRING,
-  },
   category_icon: {
     type: DataTypes.INTEGER,
     allowNull: true,

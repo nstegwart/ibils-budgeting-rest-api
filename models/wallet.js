@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/database');
 const User = require('./user');
+const CategoryIcon = require('./category-icon');
 
 const Wallet = sequelize.define('Wallet', {
   id: {
@@ -13,7 +14,12 @@ const Wallet = sequelize.define('Wallet', {
     allowNull: false,
   },
   wallet_icon: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: CategoryIcon,
+      key: 'id',
+    },
   },
   userId: {
     type: DataTypes.INTEGER,

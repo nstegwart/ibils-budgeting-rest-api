@@ -73,7 +73,7 @@ exports.register = async (req, res) => {
     await Wallet.create({
       wallet_name: 'Personal Wallet',
       userId: user.id,
-      wallet_icon: 'default_icon', // You can set a default icon or leave it null
+      wallet_icon: '1', // You can set a default icon or leave it null
     });
 
     const token = jwt.sign(
