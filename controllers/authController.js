@@ -7,6 +7,10 @@ const OTP = require('../models/otp');
 
 const nodemailer = require('nodemailer');
 const Wallet = require('../models/wallet');
+const { validationResult } = require('express-validator');
+const PremiumStatus = require('../models/premium-status');
+const { getUserProfile } = require('./userController');
+const { formatArrayError } = require('../utils/objectHandler');
 
 const sendEmail = async (to, subject, text) => {
   const transporter = nodemailer.createTransport({
@@ -31,7 +35,8 @@ const sendEmail = async (to, subject, text) => {
 exports.register = async (req, res) => {
   try {
     const { username, email, full_name, phone_number, password } = req.body;
-    const errors = {};
+    const errors = validationResult(req);
+    const fieldError = {};
     const existingUsername = await User.findOne({
       where: { username: req.body.username },
     });
@@ -41,15 +46,18 @@ exports.register = async (req, res) => {
     });
 
     if (existingUsername) {
-      errors.username = 'Username already in use';
+      fieldError.username = 'Username already in use';
     }
 
     if (existingEmail) {
-      errors.email = 'Email already in use';
+      fieldError.email = 'Email already in use';
     }
+    if (!errors.isEmpty() || Object.keys(fieldError).length > 0) {
+      const formattedErrors = formatArrayError(errors.array());
 
-    if (Object.keys(errors).length > 0) {
-      return res.status(400).json({ data: errors });
+      return res
+        .status(400)
+        .json({ error: { ...formattedErrors, ...fieldError } });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -91,9 +99,11 @@ exports.register = async (req, res) => {
       `Welcome ${full_name}! Your OTP for account verification is: ${otp}`
     );
 
+    const userProfile = await getUserProfile(user.id);
+
     res.status(201).json({
       message: 'User registered successfully. Please check your email for OTP.',
-      userId: user.id,
+      data: userProfile,
       token,
     });
   } catch (error) {
@@ -106,14 +116,18 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { emailOrUsername, password } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const formattedErrors = formatArrayError(errors.array());
+      console.log('login errors', errors.array(), errors);
+      return res.status(400).json({ error: formattedErrors });
+    }
 
     const user = await User.findOne({
       where: {
         [Op.or]: [{ email: emailOrUsername }, { username: emailOrUsername }],
       },
     });
-
-    console.log('User:', user);
 
     if (!user) {
       return res.status(401).json({
@@ -135,7 +149,8 @@ exports.login = async (req, res) => {
       { expiresIn: '90d' }
     );
 
-    res.status(200).json({ token, userId: user.id });
+    const userProfile = await getUserProfile(user.id);
+    res.status(200).json({ token, data: userProfile });
   } catch (error) {
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
@@ -167,7 +182,10 @@ exports.verifyOTP = async (req, res) => {
     await User.update({ is_verified: true }, { where: { id: userId } });
     await OTP.destroy({ where: { id: otpRecord.id } });
 
-    res.status(200).json({ message: 'OTP verified successfully' });
+    const userProfile = await getUserProfile(userId);
+    res
+      .status(200)
+      .json({ message: 'OTP verified successfully', data: userProfile });
   } catch (error) {
     res
       .status(500)

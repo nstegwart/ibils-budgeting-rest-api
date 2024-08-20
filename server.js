@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -76,6 +77,10 @@ app.use((error, req, res, next) => {
   res.status(status).json({ message: message });
 });
 
+app.use(
+  '/public/images',
+  express.static(path.join(__dirname, 'public/images'))
+);
 app.get('/', (req, res) => {
   res
     .status(200)
