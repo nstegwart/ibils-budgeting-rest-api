@@ -35,6 +35,10 @@ const PremiumStatus = sequelize.define(
       type: DataTypes.DATE,
       allowNull: true,
     },
+    purchase_from: {
+      type: DataTypes.ENUM('web', 'appstore', 'playstore'),
+      allowNull: false,
+    },
   },
   {
     timestamps: true, // adds createdAt and updatedAt

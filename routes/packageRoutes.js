@@ -4,6 +4,11 @@ const tokenMiddleware = require('../middleware/tokenMiddleware');
 
 const router = express.Router();
 
+router.get(
+  '/history',
+  tokenMiddleware,
+  packageController.getUserPremiumHistory
+);
 router.get('/package-list', tokenMiddleware, packageController.getAllPackages);
 router.get(
   '/premium-status',

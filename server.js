@@ -7,11 +7,7 @@ const bodyParser = require('body-parser');
 const sequelize = require('./utils/database');
 
 const authRoutes = require('./routes');
-const {
-  seedPackages,
-  seedCategories,
-  seedCategoryIcons,
-} = require('./utils/dummy');
+const { seedCategories, seedCategoryIcons } = require('./utils/dummy');
 
 const PremiumStatus = require('./models/premium-status');
 const User = require('./models/user');
@@ -23,8 +19,15 @@ const MonthlyBudgeting = require('./models/monthly-budget');
 const Category = require('./models/category');
 const CategoryIcon = require('./models/category-icon');
 const DailyExpense = require('./models/daily-expense');
+const Currency = require('./models/currency');
+const { seedCurrencies, seedPackages } = require('./utils/initialData');
 
-User.hasOne(PremiumStatus, { foreignKey: 'userId' });
+User.hasMany(PremiumStatus, { foreignKey: 'userId' });
+User.belongsTo(Currency, {
+  foreignKey: 'preferredCurrencyId',
+  as: 'preferredCurrency',
+});
+Currency.hasMany(User, { foreignKey: 'preferredCurrencyId' });
 
 PremiumStatus.belongsTo(User, { foreignKey: 'userId' });
 Package.hasMany(PremiumStatus, { foreignKey: 'packageId' });
@@ -101,6 +104,7 @@ sequelize
     await seedPackages();
     await seedCategoryIcons();
     await seedCategories();
+    await seedCurrencies();
     app.listen(process.env.PORT, () => {
       console.log(`Server running on port ${port}`);
     });

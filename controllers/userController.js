@@ -3,6 +3,7 @@ const path = require('path');
 
 const User = require('../models/user');
 const PremiumStatus = require('../models/premium-status');
+const Currency = require('../models/currency');
 
 exports.getUserProfile = async (userId) => {
   const userData = await User.findByPk(userId, {
@@ -25,15 +26,37 @@ exports.getUserProfile = async (userId) => {
           'expiration_date',
           'createdAt',
           'updatedAt',
+          'purchase_from',
         ],
+        order: [['createdAt', 'DESC']],
+        limit: 1,
+      },
+      {
+        model: Currency,
+        as: 'preferredCurrency',
+        attributes: ['code', 'name', 'symbol'],
       },
     ],
   });
 
   const userProfile = userData.toJSON();
-  userProfile.premium_status = userProfile.PremiumStatus || null;
-  delete userProfile.PremiumStatus;
+  userProfile.premium_status = Array.isArray(userProfile.PremiumStatuses)
+    ? userProfile.PremiumStatuses[0]
+    : null;
+  delete userProfile.PremiumStatuses;
   userProfile.profile_picture = `${process.env.BASE_URL}/public/images/${userProfile.profile_picture}`;
+
+  if (userProfile.preferredCurrency) {
+    userProfile.currency = userProfile.preferredCurrency;
+  } else {
+    const baseCurrency = await Currency.findOne({
+      where: { is_base_currency: true },
+      attributes: ['code', 'name', 'symbol'],
+    });
+    userProfile.currency = baseCurrency;
+  }
+  delete userProfile.preferredCurrency;
+  delete userProfile.preferredCurrencyId;
 
   return userProfile;
 };

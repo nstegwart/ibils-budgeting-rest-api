@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/database');
+const Currency = require('./currency');
 
 const User = sequelize.define(
   'User',
@@ -44,6 +45,14 @@ const User = sequelize.define(
     },
     profile_picture: {
       type: DataTypes.STRING,
+    },
+    preferredCurrencyId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: Currency,
+        key: 'id',
+      },
     },
   },
   {
