@@ -26,5 +26,6 @@ router.delete(
 );
 
 router.get('/category-icons', categoryController.getCategoryIcons);
+router.get('/all-category', tokenMiddleware, categoryController.getAllCategory);
 
 module.exports = router;

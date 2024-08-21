@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const Category = require('../models/category');
 const CategoryIcon = require('../models/category-icon');
 
@@ -49,7 +50,7 @@ exports.getUserCategories = async (req, res) => {
       default_category_icon: category.default_category_icon,
       category_icon: category.icon,
       category_type: category.category_type,
-      is_my_category: false,
+      is_my_category: true,
     }));
     res.status(200).json({ data: formattedCategories });
   } catch (error) {
@@ -122,5 +123,38 @@ exports.getCategoryIcons = async (req, res) => {
     res.json({ data: icons });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching category icons' });
+  }
+};
+
+exports.getAllCategory = async (req, res) => {
+  try {
+    const userId = req.userData.userId;
+    const categories = await Category.findAll({
+      where: {
+        [Op.or]: [{ userId: null }, { userId: userId }],
+      },
+      include: [
+        {
+          model: CategoryIcon,
+          as: 'icon',
+          attributes: ['name_icon', 'icon_url'],
+        },
+      ],
+    });
+
+    const formattedCategories = categories.map((category) => ({
+      ...category.toJSON(),
+      is_my_category: category.userId === userId,
+    }));
+
+    res.status(200).json({
+      message: 'Categories fetched successfully',
+      categories: formattedCategories,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching categories',
+      error: error.message,
+    });
   }
 };
