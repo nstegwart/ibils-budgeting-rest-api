@@ -3,20 +3,22 @@ const MonthlyBudgeting = require('../models/monthly-budget');
 
 exports.createMonthlyBudget = async (req, res) => {
   try {
-    const { walletId, categoryId, date, amount, budget_name } = req.body;
+    const { walletId, categoryId, date, amount, budget_name, category_type } =
+      req.body;
     const newBudget = await MonthlyBudgeting.create({
       walletId,
       categoryId,
       date,
       amount,
       budget_name,
+      category_type,
     });
 
     const budgetWithCategory = await MonthlyBudgeting.findByPk(newBudget.id, {
       include: [
         {
           model: Category,
-          attributes: ['id', 'category_name', 'category_type'],
+          attributes: ['id', 'category_name'],
         },
       ],
     });
@@ -27,6 +29,7 @@ exports.createMonthlyBudget = async (req, res) => {
       date: budgetWithCategory.date,
       amount: budgetWithCategory.amount,
       budget_name: budgetWithCategory.budget_name,
+      category_type: budgetWithCategory.category_type,
       category_budget: budgetWithCategory.Category,
     };
 
@@ -44,18 +47,26 @@ exports.createMonthlyBudget = async (req, res) => {
 exports.editMonthlyBudget = async (req, res) => {
   try {
     const { id } = req.params;
-    const { walletId, categoryId, date, amount, budget_name } = req.body;
+    const { walletId, categoryId, date, amount, budget_name, category_type } =
+      req.body;
     const budget = await MonthlyBudgeting.findByPk(id);
     if (!budget) {
       return res.status(404).json({ message: 'Monthly budget not found' });
     }
-    await budget.update({ walletId, categoryId, date, amount, budget_name });
+    await budget.update({
+      walletId,
+      categoryId,
+      date,
+      amount,
+      budget_name,
+      category_type,
+    });
 
     const updatedBudget = await MonthlyBudgeting.findByPk(id, {
       include: [
         {
           model: Category,
-          attributes: ['id', 'category_name', 'category_type'],
+          attributes: ['id', 'category_name'],
         },
       ],
     });
@@ -66,6 +77,7 @@ exports.editMonthlyBudget = async (req, res) => {
       date: updatedBudget.date,
       amount: updatedBudget.amount,
       budget_name: updatedBudget.budget_name,
+      category_type: updatedBudget.category_type,
       category_budget: updatedBudget.Category,
     };
 
@@ -88,7 +100,7 @@ exports.getMonthlyBudgets = async (req, res) => {
       include: [
         {
           model: Category,
-          attributes: ['id', 'category_name', 'category_type'],
+          attributes: ['id', 'category_name'],
         },
       ],
     });
@@ -98,6 +110,7 @@ exports.getMonthlyBudgets = async (req, res) => {
       date: budget.date,
       amount: budget.amount,
       budget_name: budget.budget_name,
+      category_type: budget.category_type,
       category_budget: budget.Category,
     }));
 
@@ -117,7 +130,7 @@ exports.getMonthlyBudgetDetail = async (req, res) => {
       include: [
         {
           model: Category,
-          attributes: ['id', 'category_name', 'category_type'],
+          attributes: ['id', 'category_name'],
         },
       ],
     });
@@ -130,6 +143,7 @@ exports.getMonthlyBudgetDetail = async (req, res) => {
       date: budget.date,
       amount: budget.amount,
       budget_name: budget.budget_name,
+      category_type: budget.category_type,
       category_budget: budget.Category,
     };
     res.status(200).json({ data: formatData });

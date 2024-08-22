@@ -20,7 +20,6 @@ exports.getPublicCategories = async (req, res) => {
       category_name: category.category_name,
       default_category_icon: category.default_category_icon,
       category_icon: category.icon,
-      category_type: category.category_type,
       is_my_category: false,
     }));
 
@@ -49,7 +48,6 @@ exports.getUserCategories = async (req, res) => {
       category_name: category.category_name,
       default_category_icon: category.default_category_icon,
       category_icon: category.icon,
-      category_type: category.category_type,
       is_my_category: true,
     }));
     res.status(200).json({ data: formattedCategories });
@@ -61,10 +59,9 @@ exports.getUserCategories = async (req, res) => {
 
 exports.createCategory = async (req, res) => {
   try {
-    const { category_name, category_type, category_icon } = req.body;
+    const { category_name, category_icon } = req.body;
     const newCategory = await Category.create({
       category_name,
-      category_type,
       category_icon,
       userId: req.userData.userId,
     });
@@ -77,7 +74,7 @@ exports.createCategory = async (req, res) => {
 exports.editCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { category_name, category_type, category_icon } = req.body;
+    const { category_name, category_icon } = req.body;
     const category = await Category.findOne({
       where: { id, userId: req.userData.userId },
     });
@@ -88,7 +85,7 @@ exports.editCategory = async (req, res) => {
         .json({ message: 'Category not found or not owned by user' });
     }
 
-    await category.update({ category_name, category_type, category_icon });
+    await category.update({ category_name, category_icon });
     res.json(category);
   } catch (error) {
     res.status(400).json({ message: 'Error updating category' });

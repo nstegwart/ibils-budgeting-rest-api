@@ -4,8 +4,15 @@ const DailyExpense = require('../models/daily-expense');
 
 exports.createDailyExpense = async (req, res) => {
   try {
-    const { walletId, categoryId, amount, date, note, photo_transaction } =
-      req.body;
+    const {
+      walletId,
+      categoryId,
+      amount,
+      date,
+      note,
+      photo_transaction,
+      category_type,
+    } = req.body;
     const newExpense = await DailyExpense.create({
       walletId,
       categoryId,
@@ -13,6 +20,7 @@ exports.createDailyExpense = async (req, res) => {
       date,
       note,
       photo_transaction,
+      category_type,
     });
     const createdExpense = await DailyExpense.findByPk(newExpense.id, {
       include: [
@@ -30,10 +38,10 @@ exports.createDailyExpense = async (req, res) => {
       note: createdExpense.note,
       photo_transaction: createdExpense.photo_transaction,
       walletId: createdExpense.walletId,
+      category_type: createdExpense.category_type,
       category: {
         id: createdExpense.Category.id,
         category_name: createdExpense.Category.category_name,
-        category_type: createdExpense.Category.category_type,
         category_icon: createdExpense.Category.icon
           ? {
               name_icon: createdExpense.Category.icon.name_icon,
@@ -57,12 +65,20 @@ exports.createDailyExpense = async (req, res) => {
 exports.editDailyExpense = async (req, res) => {
   try {
     const { id } = req.params;
-    const { categoryId, amount, date, note, photo_transaction } = req.body;
+    const { categoryId, amount, date, note, photo_transaction, category_type } =
+      req.body;
     const expense = await DailyExpense.findByPk(id);
     if (!expense) {
       return res.status(404).json({ message: 'Daily expense not found' });
     }
-    await expense.update({ categoryId, amount, date, note, photo_transaction });
+    await expense.update({
+      categoryId,
+      amount,
+      date,
+      note,
+      photo_transaction,
+      category_type,
+    });
     const updatedExpense = await DailyExpense.findByPk(id, {
       include: [
         {
@@ -79,10 +95,10 @@ exports.editDailyExpense = async (req, res) => {
       note: updatedExpense.note,
       photo_transaction: updatedExpense.photo_transaction,
       walletId: updatedExpense.walletId,
+      category_type: updatedExpense.category_type,
       category: {
         id: updatedExpense.Category.id,
         category_name: updatedExpense.Category.category_name,
-        category_type: updatedExpense.Category.category_type,
         category_icon: updatedExpense.Category.icon
           ? {
               name_icon: updatedExpense.Category.icon.name_icon,
@@ -127,7 +143,7 @@ exports.getDailyExpensesList = async (req, res) => {
       include: [
         {
           model: Category,
-          attributes: ['category_name', 'category_type'],
+          attributes: ['category_name'],
           include: [
             {
               model: CategoryIcon,
@@ -146,10 +162,10 @@ exports.getDailyExpensesList = async (req, res) => {
       note: expense.note,
       photo_transaction: expense.photo_transaction,
       walletId: expense.walletId,
+      category_type: expense.category_type,
       category: {
         id: expense.Category.id,
         category_name: expense.Category.category_name,
-        category_type: expense.Category.category_type,
         category_icon: expense.Category.icon
           ? {
               name_icon: expense.Category.icon.name_icon,
@@ -174,7 +190,7 @@ exports.getDailyExpenseDetail = async (req, res) => {
       include: [
         {
           model: Category,
-          attributes: ['category_name', 'category_type'],
+          attributes: ['category_name'],
           include: [
             {
               model: CategoryIcon,
@@ -195,10 +211,10 @@ exports.getDailyExpenseDetail = async (req, res) => {
       note: expense.note,
       photo_transaction: expense.photo_transaction,
       walletId: expense.walletId,
+      category_type: expense.category_type,
       category: {
         id: expense.Category.id,
         category_name: expense.Category.category_name,
-        category_type: expense.Category.category_type,
         category_icon: expense.Category.icon
           ? {
               name_icon: expense.Category.icon.name_icon,

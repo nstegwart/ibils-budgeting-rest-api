@@ -21,10 +21,6 @@ const Category = sequelize.define('Category', {
       key: 'id',
     },
   },
-  category_type: {
-    type: DataTypes.ENUM('addition', 'subtraction'),
-    allowNull: false,
-  },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: true,

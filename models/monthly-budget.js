@@ -38,6 +38,10 @@ const MonthlyBudgeting = sequelize.define('MonthlyBudgeting', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  category_type: {
+    type: DataTypes.ENUM('addition', 'subtraction'),
+    allowNull: false,
+  },
 });
 
 module.exports = MonthlyBudgeting;

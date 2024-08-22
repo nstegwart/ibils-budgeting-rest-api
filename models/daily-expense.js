@@ -39,6 +39,10 @@ const DailyExpense = sequelize.define('DailyExpense', {
       key: 'id',
     },
   },
+  category_type: {
+    type: DataTypes.ENUM('addition', 'subtraction'),
+    allowNull: false,
+  },
 });
 
 module.exports = DailyExpense;
