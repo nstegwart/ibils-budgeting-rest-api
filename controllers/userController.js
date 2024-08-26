@@ -15,6 +15,7 @@ exports.getUserProfile = async (userId) => {
       'phone_number',
       'user_language',
       'profile_picture',
+      'register_via',
       'is_verified',
     ],
     include: [

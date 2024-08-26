@@ -30,7 +30,7 @@ const User = sequelize.define(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     register_via: {
       type: DataTypes.ENUM('fb', 'google', 'apple', 'internal'),

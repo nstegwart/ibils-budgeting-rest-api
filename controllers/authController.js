@@ -231,3 +231,61 @@ exports.resendOTP = async (req, res) => {
       .json({ message: 'Error resending OTP', error: error.message });
   }
 };
+
+exports.socialAuth = async (req, res) => {
+  try {
+    const { email, register_via } = req.body;
+
+    if (!['fb', 'google', 'apple'].includes(register_via)) {
+      return res.status(400).json({ message: 'Invalid social media platform' });
+    }
+
+    let user = await User.findOne({ where: { email } });
+
+    if (user) {
+      // User exists, perform login
+      const token = jwt.sign(
+        { userId: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '90d' }
+      );
+
+      const userProfile = await getUserProfile(user.id);
+      return res.status(200).json({ token, data: userProfile });
+    } else {
+      // User doesn't exist, perform registration
+      user = await User.create({
+        email,
+        register_via,
+        is_verified: true, // Social media users are considered verified
+      });
+
+      await Wallet.create({
+        wallet_name: 'Personal Wallet',
+        userId: user.id,
+        wallet_icon: '1',
+      });
+
+      const token = jwt.sign(
+        { userId: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '90d' }
+      );
+
+      const userProfile = await getUserProfile(user.id);
+
+      return res.status(201).json({
+        message: 'User registered successfully via social media.',
+        data: userProfile,
+        token,
+      });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: 'Error in social authentication',
+        error: error.message,
+      });
+  }
+};

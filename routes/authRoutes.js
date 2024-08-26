@@ -40,4 +40,6 @@ router.post(
 
 router.post('/resend-otp', tokenMiddleware, authController.resendOTP);
 
+router.post('/social-auth', authController.socialAuth);
+
 module.exports = router;
