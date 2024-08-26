@@ -42,4 +42,7 @@ router.post('/resend-otp', tokenMiddleware, authController.resendOTP);
 
 router.post('/social-auth', authController.socialAuth);
 
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/verify-forgot-password', authController.verifyForgotPassword);
+
 module.exports = router;
