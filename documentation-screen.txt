@@ -1,0 +1,132 @@
+*) Butuh designer:
+    a. Logo(Pendek dan Panjang)
+    b. Splash Screen
+    c. Premium Page
+    d. Profile Page
+    e. Design bottom Tab Bar
+    f. Design Login/Register/OTP/Forgot Password
+    g. Design Icon untuk level(Novice Budgeter, Savvy Saver, Money Manager, Finance Guru, Wealth Wizard)
+    h. Design image untuk alert success
+    i. Design image untuk alert error
+    j. Design image untuk alert warning
+    k. Design image untuk alert info
+    l. Design image untuk alert question
+    m. Design image untuk empty item
+    n. Design icon premium
+    o. Ganti design background header
+    
+- Logo
+- Splash screen
+- PIN
+- Homepage sebelum login
+
+- Login page
+    a. Input: 1. email/username | 2. password
+    b. Button login social media: Google, Facebook, Apple
+    c. Direct: forgot password, register
+- Register:
+    a. Input: 1. email | 2. password
+    b. Button register social media: Google, Facebook, Apple
+    c. Direct: login
+- Forgot password:
+    a. Input: 1. email
+- OTP page
+    a. Input OTP
+    b. Resend Email
+
+- Bottom Tab Bar
+    a. Menu: Home, Stats, Add, Tools, Profile
+
+A. Tab Home
+- Homepage setelah login
+    a. Cara penggunaan apps(seperti story instagram)
+    b. Card Budgeting data
+    b. List transaksi hari ini
+
+- List semua transaksi
+    a. Title
+    b. Tipe tampilan list(Harian/Mingguan/Bulanan/Tahunan: Jika harian tampilan transaksi per hari, jika mingguan transaksi per minggu(total transkasi per masing-masing minggu, dan seterusnya))
+    c. Grafik transaksi(tergantung tipe filter user:harian/mingguan/bulanan)
+    d. List transaksi
+    e. Button filter berdasarkan tanggal(jika diselect maka akan menampilkan transaksi sesuai "range" tanggal yang dipilih -> actionnya akan ke redirect ke page baru yang isinya listing tersebut)
+
+- Budgeting List
+    a. Graph/Card: Total Pemasukan & Pengeluaran
+    b. List Budgeting Per Bulan(Informasi Bulan, Total Pemasukan, Total Pengeluaran)
+    c. Button Add Budgeting
+
+- Budgeting Detail
+    a. Overview alokasi budgeting
+    b. Tab Listing & Chart
+        i. List Budget
+        ii. Chart
+    c. Button export excel
+
+- Add Budgeting
+    a. Input: 1. Select: Nama Bulan & Tahun | 2. Total Pemasukan
+    b. Rencana Alokasi Budget
+        i. Jumlah uang
+        ii. Kategori
+        iii. Tipe: pemasukan/pengeluaran
+        iv. Button tambah alokasi
+    c. Button save
+
+B. Tab Stats
+- Stats
+    a. Tab Harian/Mingguan/Bulanan/Tahunan
+    b. Grafik transaksi(berdasarkan tab)
+    c. Stats per kategori
+        -Ketika di klik akan ke list transaksi per category
+
+C. Tambah Transaksi
+    - Input: 1. Tanggal | 2. Nama Transaksi | 3. Jumlah | 4. Kategori | 5. Tipe: pemasukan/pengeluaran | 6. Foto Transaksi/Receipt(Premium)
+    - Button save
+
+D. Tools
+    - Tips & Tricks
+    - Receipt Scanner
+    - Currency Converter
+    - Invoice generator
+    - Debt payoff planner
+    - Bill reminder
+    - Financial health check
+    - Tax Calculator
+    - Loan Calculator
+    - Financial Goal Setting Wizard
+    - Investment Return Calculator
+    - Saving Goal Tracker
+    - Debt payoff planner
+
+E. Profile
+    -Profile:
+        - Avatar
+        - Ranking
+        - Premium Status(kalau belum premium ada button go premium)
+        - Nama
+        - Email
+        - Menu
+            a. Edit Profile
+            b. Points & Rewards(Mision, Points, Achievements(badge))
+            c. Premium & Subscription
+            d. Settings(Currency, Language, Notification, Manage Categories, Manage Wallet)
+            e. Contact Us
+            f. Help & Support
+            g. About Us
+            h. Privacy Policy
+            k. Export Data
+        - Logout
+    
+    - Premium
+        a. Benefits
+        b. Subscription Plan
+        c. Testimonial
+        d. Text terms of use/deskripsi
+
+
+*******
+SCHEMA ADS
+    a. Tiap 2 kali user add transaksi muncul rewarded ads
+    b. Tiap kali user add budgeting muncul rewarded ads
+    c. Tiap selesai ads/ads gagal maka muncul popup untuk upgrade ke premium
+    d. Di list ke 4 item muncul ads banner
+    e. Di detail budgeting muncul ads banner

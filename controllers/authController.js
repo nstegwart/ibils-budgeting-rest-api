@@ -37,17 +37,17 @@ exports.register = async (req, res) => {
     const { username, email, full_name, phone_number, password } = req.body;
     const errors = validationResult(req);
     const fieldError = {};
-    const existingUsername = await User.findOne({
-      where: { username: req.body.username },
-    });
+    // const existingUsername = await User.findOne({
+    //   where: { username: req.body.username },
+    // });
 
     const existingEmail = await User.findOne({
       where: { email: req.body.email },
     });
 
-    if (existingUsername) {
-      fieldError.username = 'Username already in use';
-    }
+    // if (existingUsername) {
+    //   fieldError.username = 'Username already in use';
+    // }
 
     if (existingEmail) {
       fieldError.email = 'Email already in use';
