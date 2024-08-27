@@ -1,7 +1,6 @@
 const { Op } = require('sequelize');
 const DailyExpense = require('../models/daily-expense');
 const Category = require('../models/category');
-const Wallet = require('../models/wallet');
 const CategoryIcon = require('../models/category-icon');
 const Currency = require('../models/currency');
 const User = require('../models/user');
@@ -97,8 +96,6 @@ exports.getHomepage = async (req, res) => {
       ],
       order: [['date', 'DESC']],
     });
-
-    console.log('todayTransactions:', todayTransactions);
 
     const formattedTransactions = todayTransactions.map((transaction) => ({
       id: transaction.id,
