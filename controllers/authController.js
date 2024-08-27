@@ -120,7 +120,6 @@ exports.login = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const formattedErrors = formatArrayError(errors.array());
-      console.log('login errors', errors.array(), errors);
       return res.status(400).json({ error: formattedErrors });
     }
 

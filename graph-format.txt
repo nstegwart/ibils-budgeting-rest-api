@@ -1,0 +1,75 @@
+Screens
+1. Homepage structure:
+- Card Budgeting(Nama Bulan - Total Balance, Pemasukan Harian & Pengeluaran Harian, Button Dot Menu: Muncul slideup menu 1. Atur Budget | 2. Laporan Bulanan | 3. Export data)
+- Left: Title: Transaksi Hari ini | Right: Button View All
+- List Transaksi Hari ini
+
+2. Budgeting List
+    - Title: Budgeting history 
+    - List Budgeting Per Bulan Tahun: List Bulan(Nama Bulan, Total transaksi)
+
+3. Budgeting Detail
+    - Card Balance(Seperti Homepage) - Balance + Expense + Sisa
+    - Chart pie budgeting
+    - Overview alokasi budgeting(Pemasukan, Pengeluaran)(Listing seperti homepage)
+    
+4. Add Budgeting
+    - Input: 1. Select: Nama Bulan & Tahun | 2. Total Balance
+    - Rencana Alokasi Budget
+        - Kategori Budget
+        - Nama Budget
+        - Jumlah uang
+
+5. Add Transaksi
+    1. Kategori: Pemasukan/Pengeluaran
+    2. Jumlah
+    3. Tanggal
+    4. Category
+    5. Catatan
+    6. Tambah invoice(premium)
+    7. Button Save
+
+6. Laporan Bulanan
+    - Graph(Pemasukan, Pengeluaran)
+    - Bulan(Nama Bulan, Total Pemasukan, Total Pengeluaran, Total Transaksi)
+    - Export ke pdf
+
+7. Detail Laporan Bulanan
+    - Card Balance(Seperti Homepage) - Balance + Expense + Sisa
+    - Chart Pie Expense / Income
+    - Total expense/income
+    - List transaksi
+    - Export ke pdf
+
+8. View All Transactions
+    A. Tab Transaksi
+        Mode harian:
+        1. Opsi harian - mingguan - bulanan
+        2. Graph
+        3. Button berisikan tanggal, ketika di klik muncul calendar(jika tipe mingguan/bulanan maka akan hide)
+        4. List transaksi
+            a. Harian: transaksi detail
+            b. Minggu: Total pemasukan dan pengeluaran perminggu, ketika di view all muncul list transaksi
+            b. Bulanan: Total pemasukan dan pengeluaran perbulan, ketika di view all muncul list transaksi
+        5. Floating - Button filter(Opsi: Tampilkan hanya pengeluaran/pemasukan, rentang tanggal)
+
+User Journey:
+A. Homepage
+    -User bisa menambahkan expense/income
+    -Expense/Income muncul di transaksi harian, ada tombol view all
+    - View All Transactions
+        A. Tab Transaksi
+        Mode harian:
+        1. Opsi harian - mingguan - bulanan
+        2. Graph
+        3. Button berisikan tanggal, ketika di klik muncul calendar(jika tipe mingguan/bulanan maka akan hide)
+        4. List transaksi
+            a. Harian: transaksi detail
+            b. Minggu: Total pemasukan dan pengeluaran perminggu, ketika di view all muncul list transaksi
+            b. Bulanan: Total pemasukan dan pengeluaran perbulan, ketika di view all muncul list transaksi
+        5. Floating - Button filter(Opsi: Tampilkan hanya pengeluaran/pemasukan, rentang tanggal)
+
+
+
+    
+ graphs -> https://gifted-charts.web.app/areachart/#animateOnChange

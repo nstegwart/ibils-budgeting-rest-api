@@ -9,6 +9,10 @@ const DailyExpense = sequelize.define('DailyExpense', {
     primaryKey: true,
     autoIncrement: true,
   },
+  transaction_name: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   amount: {
     type: DataTypes.DECIMAL,
     allowNull: false,

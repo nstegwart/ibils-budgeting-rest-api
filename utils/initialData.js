@@ -15,8 +15,6 @@ const seedPackages = async () => {
       defaults: pkg,
     });
   }
-
-  console.log('Packages seeded successfully');
 };
 
 const seedCurrencies = async () => {

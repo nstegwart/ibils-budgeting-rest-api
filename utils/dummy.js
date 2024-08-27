@@ -13,8 +13,6 @@ const seedCategoryIcons = async () => {
       defaults: icon,
     });
   }
-
-  console.log('Category icons seeded successfully');
 };
 
 const seedCategories = async () => {
@@ -30,8 +28,6 @@ const seedCategories = async () => {
       defaults: category,
     });
   }
-
-  console.log('Categories seeded successfully');
 };
 
 module.exports = {

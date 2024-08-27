@@ -4,6 +4,7 @@ const path = require('path');
 const User = require('../models/user');
 const PremiumStatus = require('../models/premium-status');
 const Currency = require('../models/currency');
+const Wallet = require('../models/wallet');
 
 exports.getUserProfile = async (userId) => {
   const userData = await User.findByPk(userId, {
@@ -39,6 +40,11 @@ exports.getUserProfile = async (userId) => {
       },
     ],
   });
+  const defaultWallet = await Wallet.findOne({
+    where: { userId: userId },
+    order: [['createdAt', 'ASC']],
+    attributes: ['id', 'wallet_name'],
+  });
 
   const userProfile = userData.toJSON();
   userProfile.premium_status = Array.isArray(userProfile.PremiumStatuses)
@@ -46,6 +52,7 @@ exports.getUserProfile = async (userId) => {
     : null;
   delete userProfile.PremiumStatuses;
   userProfile.profile_picture = `${process.env.BASE_URL}/public/images/${userProfile.profile_picture}`;
+  userProfile.default_wallet = defaultWallet ? defaultWallet : null;
 
   if (userProfile.preferredCurrency) {
     userProfile.currency = userProfile.preferredCurrency;

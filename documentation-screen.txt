@@ -39,9 +39,9 @@
 
 A. Tab Home
 - Homepage setelah login
-    a. Cara penggunaan apps(seperti story instagram)
-    b. Card Budgeting data
-    b. List transaksi hari ini
+    - Card Budgeting(Nama Bulan - Total Balance, Pemasukan Harian & Pengeluaran Harian, Button Dot Menu: Muncul slideup menu 1. Atur Budget | 2. Laporan Bulanan | 3. Export data)
+    - Left: Title: Transaksi Hari ini | Right: Button View All
+    - List Transaksi Hari ini
 
 - List semua transaksi
     a. Title
